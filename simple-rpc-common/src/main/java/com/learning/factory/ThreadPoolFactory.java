@@ -14,13 +14,27 @@ public final class ThreadPoolFactory {
 
     }
 
-    public static ExecutorService createThreadPoolIfAbsent(String threadNamePrefix) {
-        ThreadPoolConfig config = new ThreadPoolConfig();
-        return createThreadPool(config, threadNamePrefix, false);
+    /**
+     * Get thread pool by thread name prefix
+     * Create new one if absent.
+     * @param threadNamePrefix
+     * @return
+     */
+    public static ExecutorService getThreadPool(String threadNamePrefix) {
+        if (!THREAD_POOLS.containsKey(threadNamePrefix)) {
+            log.info("There is not {} thread pool in THREAD_POOLS, create new one.", threadNamePrefix);
+            createThreadPoolIfAbsent(threadNamePrefix);
+        }
+        return THREAD_POOLS.get(threadNamePrefix);
     }
 
-    public static ExecutorService createThreadPoolIfAbsent(ThreadPoolConfig customThreadPoolConfig, String threadNamePrefix) {
-        return createThreadPool(customThreadPoolConfig, threadNamePrefix, false);
+    public static void createThreadPoolIfAbsent(String threadNamePrefix) {
+        ThreadPoolConfig config = new ThreadPoolConfig();
+        createThreadPool(config, threadNamePrefix, false);
+    }
+
+    public static void createThreadPoolIfAbsent(ThreadPoolConfig customThreadPoolConfig, String threadNamePrefix) {
+        createThreadPool(customThreadPoolConfig, threadNamePrefix, false);
     }
 
     /**
@@ -31,17 +45,15 @@ public final class ThreadPoolFactory {
      * @param threadPoolConfig
      * @param threadNamePrefix
      * @param daemon
-     * @return
      */
-    public static ExecutorService createThreadPoolIfAbsent(ThreadPoolConfig threadPoolConfig, String threadNamePrefix, Boolean daemon) {
+    public static void createThreadPoolIfAbsent(ThreadPoolConfig threadPoolConfig, String threadNamePrefix, Boolean daemon) {
         ExecutorService threadPool = THREAD_POOLS.computeIfAbsent(threadNamePrefix, k -> createThreadPool(threadPoolConfig, threadNamePrefix, daemon));
 
         if (threadPool.isTerminated() || threadPool.isShutdown()) {
+            log.info("{} thread pool is shutdown or terminated, create new one.", threadNamePrefix);
             threadPool = createThreadPool(threadPoolConfig, threadNamePrefix, daemon);
             THREAD_POOLS.put(threadNamePrefix, threadPool);
         }
-
-        return threadPool;
     }
 
     /**
@@ -49,10 +61,11 @@ public final class ThreadPoolFactory {
      * @param customThreadPoolConfig
      * @param threadNamePrefix
      * @param daemon
-     * @return
+     * @return Thread pool
      */
     private static ExecutorService createThreadPool(ThreadPoolConfig customThreadPoolConfig, String threadNamePrefix, Boolean daemon) {
         ThreadFactory threadFactory = createThreadFactory(threadNamePrefix, daemon);
+        log.info("Create {} thread pool.", threadNamePrefix);
         return new ThreadPoolExecutor(customThreadPoolConfig.getCorePoolSize(), customThreadPoolConfig.getMaximumPoolSize(),
                 customThreadPoolConfig.getKeepAliveTime(), customThreadPoolConfig.getUnit(), customThreadPoolConfig.getWorkQueue(),
                 threadFactory);
@@ -64,16 +77,18 @@ public final class ThreadPoolFactory {
      * Otherwise, create a default factory.
      * @param threadNamePrefix
      * @param daemon
-     * @return
+     * @return Thread factory
      */
     private static ThreadFactory createThreadFactory(String threadNamePrefix, Boolean daemon) {
         if (threadNamePrefix != null) {
             if (daemon != null) {
+                log.info("Create thread factory for {} thread pool.", threadNamePrefix);
                 return new ThreadFactoryBuilder()
                         .setNameFormat(threadNamePrefix + "-%d")
                         .setDaemon(daemon).build();
             }
         }
+        log.info("Create a default thread factory.");
         return Executors.defaultThreadFactory();
     }
 }
