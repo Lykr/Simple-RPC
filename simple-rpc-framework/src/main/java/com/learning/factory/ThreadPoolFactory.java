@@ -17,6 +17,7 @@ public final class ThreadPoolFactory {
     /**
      * Get thread pool by thread name prefix
      * Create new one if absent.
+     *
      * @param threadNamePrefix
      * @return
      */
@@ -42,6 +43,7 @@ public final class ThreadPoolFactory {
      * If there is not thread pool named threadNamePrefix in THREAD_POOLS, create one.
      * If the thread pool is terminated or shutdown, create one.
      * Otherwise, return the one in THREAD_POOLS already.
+     *
      * @param threadPoolConfig
      * @param threadNamePrefix
      * @param daemon
@@ -58,6 +60,7 @@ public final class ThreadPoolFactory {
 
     /**
      * Create Thread Pool
+     *
      * @param customThreadPoolConfig
      * @param threadNamePrefix
      * @param daemon
@@ -75,6 +78,7 @@ public final class ThreadPoolFactory {
      * Create thread factory
      * Create a customized factory if threadNamePrefix is not null.
      * Otherwise, create a default factory.
+     *
      * @param threadNamePrefix
      * @param daemon
      * @return Thread factory

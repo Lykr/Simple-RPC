@@ -10,8 +10,10 @@
         <module name="simple-rpc-service" />
         <module name="simple-rpc-client" />
         <module name="simple-rpc-server" />
-        <module name="simple-rpc-common" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="simple-rpc-common" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

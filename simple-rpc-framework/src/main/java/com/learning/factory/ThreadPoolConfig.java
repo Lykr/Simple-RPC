@@ -1,6 +1,8 @@
 package com.learning.factory;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -9,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ThreadPoolConfig {
     /**
      * Default parameters
