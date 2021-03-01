@@ -1,35 +1,26 @@
 package com.learning.registry.zookeeper;
 
 import com.learning.properties.ServiceProperties;
-import com.learning.registry.ServiceRegistry;
+import com.learning.registry.AbstractServiceRegistry;
 import com.learning.registry.zookeeper.helper.CuratorHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-public class ZkServiceRegistry implements ServiceRegistry {
+public class ZkServiceRegistry extends AbstractServiceRegistry {
     private final CuratorHelper curatorHelper;
-    private final InetSocketAddress localHostSocketAddress;
-    // {serviceName: serviceSocketAddresses}
-    private final Map<String, List<String>> servicesSocketAddressMap;
-    private final Set<String> registeredServiceNamesSet;
 
-    public ZkServiceRegistry(InetSocketAddress inetSocketAddress) {
-        localHostSocketAddress = inetSocketAddress;
+    public ZkServiceRegistry(InetSocketAddress localHostSocketAddress) {
+        super(localHostSocketAddress);
+
         log.info("Loading ZooKeeper configuration...");
         ZooKeeperConfig zkConfig = new ZooKeeperConfig();
 
         log.info("Creating CuratorHelper...");
         curatorHelper = new CuratorHelper(zkConfig);
-
-        servicesSocketAddressMap = new ConcurrentHashMap<>();
-        registeredServiceNamesSet = ConcurrentHashMap.newKeySet();
     }
 
     @Override

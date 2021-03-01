@@ -5,7 +5,7 @@ import com.learning.factory.ThreadPoolFactory;
 import com.learning.properties.ServiceProperties;
 import com.learning.provider.ServiceProvider;
 import com.learning.provider.impl.ServiceProviderImpl;
-import com.learning.registry.ServiceRegistry;
+import com.learning.registry.ServiceRegistration;
 import com.learning.registry.zookeeper.ZkServiceRegistry;
 import com.learning.remoting.RpcConfig;
 
@@ -19,14 +19,14 @@ public abstract class AbstractServer {
     protected final int PORT; // Server port
     protected ExecutorService threadPool; // Thread pool for running service
     protected ServiceProvider serviceProvider; // Service provider for adding and getting service
-    protected ServiceRegistry serviceRegistry; // Service registry for registering service
+    protected ServiceRegistration serviceRegistration; // Service registry for registering service
 
     protected AbstractServer(RpcConfig rpcConfig) throws UnknownHostException {
         this.LOCAL_HOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
         this.PORT = rpcConfig.getPort();
         this.threadPool = ThreadPoolFactory.getThreadPool(rpcConfig.getThreadNamePrefix());
         this.serviceProvider = new ServiceProviderImpl();
-        this.serviceRegistry = new ZkServiceRegistry(new InetSocketAddress(LOCAL_HOST_ADDRESS, PORT));
+        this.serviceRegistration = new ZkServiceRegistry(new InetSocketAddress(LOCAL_HOST_ADDRESS, PORT));
     }
 
     /**
