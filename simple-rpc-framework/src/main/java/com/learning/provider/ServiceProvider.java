@@ -1,7 +1,5 @@
 package com.learning.provider;
 
-import com.learning.properties.ServiceProperties;
-
 import java.util.List;
 
 /**
@@ -11,19 +9,25 @@ public interface ServiceProvider {
     /**
      * Add service to service provider
      *
-     * @param serviceProperties service properties
-     * @param instance          service instance
-     * @return Is the service added successful?
+     * @param serviceName service name
+     * @param obj         service object
      */
-    boolean addService(ServiceProperties serviceProperties, Object instance);
+    void addService(String serviceName, Object obj);
 
     /**
      * Get service instance
      *
-     * @param serviceProperties service properties
+     * @param serviceName service name
      * @return service instance
      */
-    Object getService(ServiceProperties serviceProperties);
+    Object getService(String serviceName);
+
+    /**
+     * Remove service
+     *
+     * @param serviceName
+     */
+    void removeService(String serviceName);
 
     /**
      * Get provided service names list

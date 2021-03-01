@@ -13,16 +13,16 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceProperties {
+public class RpcServiceProperties {
     private String name;
     private String version;
 
-    public ServiceProperties(Class<?> clazz) {
+    public RpcServiceProperties(Class<?> clazz) {
         this.name = clazz.getName();
         this.version = null;
     }
 
-    public ServiceProperties(Class<?> clazz, String version) {
+    public RpcServiceProperties(Class<?> clazz, String version) {
         this.name = clazz.getName();
         this.version = version;
     }

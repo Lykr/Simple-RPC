@@ -4,11 +4,13 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.learning.serializer.Serializer;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+@Component
 public class KryoSerializer implements Serializer {
     // Kryo is not thread safe, in a multithreaded environment ThreadLocal might be considered.
     // An other way is pooling the kryo.
@@ -37,7 +39,7 @@ public class KryoSerializer implements Serializer {
             kryos.remove();
             return clazz.cast(object);
         } catch (IOException e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
         return null;
     }

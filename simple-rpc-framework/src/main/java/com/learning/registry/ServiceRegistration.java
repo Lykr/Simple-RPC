@@ -1,25 +1,23 @@
 package com.learning.registry;
 
-import com.learning.properties.ServiceProperties;
-
 import java.util.List;
 
 public interface ServiceRegistration {
     /**
      * Register service
      *
-     * @param serviceProperties
+     * @param rpcServiceName
      * @return
      */
-    boolean registerService(ServiceProperties serviceProperties);
+    boolean registerService(String rpcServiceName);
 
     /**
      * Deregister service
      *
-     * @param serviceProperties
+     * @param rpcServiceName
      * @return
      */
-    boolean deregisterService(ServiceProperties serviceProperties);
+    boolean deregisterService(String rpcServiceName);
 
     /**
      * Get registered service names list

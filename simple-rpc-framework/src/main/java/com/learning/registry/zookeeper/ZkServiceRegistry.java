@@ -1,40 +1,39 @@
 package com.learning.registry.zookeeper;
 
-import com.learning.properties.ServiceProperties;
+import com.learning.config.ZooKeeperConfig;
 import com.learning.registry.AbstractServiceRegistry;
 import com.learning.registry.zookeeper.helper.CuratorHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@Component
 public class ZkServiceRegistry extends AbstractServiceRegistry {
-    private final CuratorHelper curatorHelper;
+    @Autowired
+    private CuratorHelper curatorHelper;
 
-    public ZkServiceRegistry(InetSocketAddress localHostSocketAddress) {
-        super(localHostSocketAddress);
-
-        log.info("Loading ZooKeeper configuration...");
-        ZooKeeperConfig zkConfig = new ZooKeeperConfig();
-
-        log.info("Creating CuratorHelper...");
-        curatorHelper = new CuratorHelper(zkConfig);
+    public ZkServiceRegistry(ZooKeeperConfig zooKeeperConfig) throws UnknownHostException {
+        super(zooKeeperConfig);
     }
 
     @Override
-    public boolean registerService(ServiceProperties serviceProperties) {
-        String serviceName = serviceProperties.getRpcServiceName();
+    public boolean registerService(String rpcServiceName) {
         String serverSocketAddress = localHostSocketAddress.getHostString() + ":" + localHostSocketAddress.getPort();
 
         try {
-            if (registeredServiceNamesSet.contains(serviceName)) {
-                log.info("This server already has a service named {}.", serviceName);
+            if (registeredServiceNamesSet.contains(rpcServiceName)) {
+                log.info("This server already has a service named {}.", rpcServiceName);
                 return true;
             } else {
-                if (curatorHelper.createNode(serviceName, serverSocketAddress)) {
-                    registeredServiceNamesSet.add(serviceName);
+                if (curatorHelper.createNode(rpcServiceName, serverSocketAddress)) {
+                    log.info("Register service {} successfully.", rpcServiceName);
+                    registeredServiceNamesSet.add(rpcServiceName);
                     return true;
                 }
             }
@@ -46,15 +45,16 @@ public class ZkServiceRegistry extends AbstractServiceRegistry {
     }
 
     @Override
-    public boolean deregisterService(ServiceProperties serviceProperties) {
-        String serviceName = serviceProperties.getRpcServiceName();
+    public boolean deregisterService(String rpcServiceName) {
         String serverSocketAddress = localHostSocketAddress.getHostString() + ":" + localHostSocketAddress.getPort();
 
-        if (curatorHelper.deleteNode(serviceName, serverSocketAddress)) {
-            registeredServiceNamesSet.remove(serviceName);
+        if (curatorHelper.deleteNode(rpcServiceName, serverSocketAddress)) {
+            registeredServiceNamesSet.remove(rpcServiceName);
+            log.info("Deregister service {} successfully.", rpcServiceName);
             return true;
         }
 
+        log.info("Fail to deregister service {}.", rpcServiceName);
         return false;
     }
 
@@ -64,18 +64,16 @@ public class ZkServiceRegistry extends AbstractServiceRegistry {
     }
 
     @Override
-    public List<InetSocketAddress> lookUpService(ServiceProperties serviceProperties) {
-        String serviceName = serviceProperties.getRpcServiceName();
-
-        log.info("Look up service named {}.", serviceName);
+    public List<InetSocketAddress> lookUpService(String rpcServiceName) {
+        log.info("Look up service named {}.", rpcServiceName);
 
         List<String> childrenNodes = null;
-        if (servicesSocketAddressMap.containsKey(serviceName)) {
-            childrenNodes = servicesSocketAddressMap.get(serviceName);
+        if (servicesSocketAddressMap.containsKey(rpcServiceName)) {
+            childrenNodes = servicesSocketAddressMap.get(rpcServiceName);
         } else {
-            childrenNodes = curatorHelper.getChildrenNodes(serviceName);
-            servicesSocketAddressMap.put(serviceName, childrenNodes);
-            curatorHelper.addWatcher(serviceName, servicesSocketAddressMap);
+            childrenNodes = curatorHelper.getChildrenNodes(rpcServiceName);
+            servicesSocketAddressMap.put(rpcServiceName, childrenNodes);
+            curatorHelper.addWatcher(rpcServiceName, servicesSocketAddressMap);
         }
 
         List<InetSocketAddress> res = new ArrayList<>(childrenNodes.size());

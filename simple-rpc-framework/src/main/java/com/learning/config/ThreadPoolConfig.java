@@ -1,9 +1,10 @@
-package com.learning.factory;
+package com.learning.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class ThreadPoolConfig {
     /**
      * Default parameters

@@ -1,6 +1,6 @@
 package com.learning.remoting.dto;
 
-import com.learning.properties.ServiceProperties;
+import com.learning.properties.RpcServiceProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +13,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RpcRequest implements Serializable {
-    private static final long serialVersionUID = -169560819425869886L;
+    private static final long serialVersionUID = -5777091485149000633L;
     private String requestId;
-    private String interfaceName;
+    private RpcServiceProperties rpcServiceProperties;
     private String methodName;
     private Object[] parameters;
     private Class<?>[] paramTypes;
-    private String version;
 }

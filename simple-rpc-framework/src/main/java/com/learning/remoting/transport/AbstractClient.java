@@ -1,13 +1,25 @@
 package com.learning.remoting.transport;
 
+import com.learning.loadbalance.LoadBalance;
 import com.learning.registry.ServiceDiscovery;
-import com.learning.registry.zookeeper.ZkServiceRegistry;
-import com.learning.remoting.RpcConfig;
+import com.learning.remoting.dto.RpcRequest;
+import com.learning.serializer.Serializer;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractClient {
-    protected final ServiceDiscovery serviceDiscovery;
+    @Autowired
+    protected ServiceDiscovery serviceDiscovery;
+    @Autowired
+    protected Serializer serializer;
 
-    protected AbstractClient(RpcConfig config) {
-        this.serviceDiscovery = new ZkServiceRegistry(null);
+    protected AbstractClient() {
     }
+
+    /**
+     * Remote procedure call
+     *
+     * @param request rpc request
+     * @return result object
+     */
+    protected abstract Object remoteProcedureCall(RpcRequest request, LoadBalance loadBalance);
 }

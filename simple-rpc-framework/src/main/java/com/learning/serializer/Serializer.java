@@ -3,6 +3,7 @@ package com.learning.serializer;
 public interface Serializer {
     /**
      * Serialize
+     *
      * @param object
      * @return bytes
      */
@@ -10,9 +11,10 @@ public interface Serializer {
 
     /**
      * Deserialize
+     *
      * @param bytes
      * @param clazz Object class
-     * @param <T> Object class type
+     * @param <T>   Object class type
      * @return Object
      */
     <T> T deserialize(byte[] bytes, Class<T> clazz);

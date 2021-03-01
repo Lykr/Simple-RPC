@@ -1,14 +1,16 @@
-package com.learning.registry.zookeeper;
+package com.learning.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class ZooKeeperConfig {
     private static final String DEFAULT_ADDRESS = "127.0.0.1";
     private static final int DEFAULT_PORT = 2181;

@@ -1,6 +1,6 @@
 package com.learning.registry.zookeeper.helper;
 
-import com.learning.registry.zookeeper.ZooKeeperConfig;
+import com.learning.config.ZooKeeperConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -8,11 +8,13 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@Component
 public class CuratorHelper {
     private final ZooKeeperConfig zkConfig;
     private final CuratorFramework zkClient;
@@ -58,6 +60,7 @@ public class CuratorHelper {
         String serviceSocketAddressPath = zkConfig.getRootPath() + "/" + serviceName + "/" + serviceSocketAddress;
         try {
             zkClient.delete().forPath(serviceSocketAddressPath);
+            log.info("Delete node for path {}.", serviceSocketAddressPath);
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Fail to delete node for path {}.", serviceSocketAddressPath);

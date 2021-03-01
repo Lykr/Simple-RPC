@@ -1,5 +1,7 @@
 package com.learning;
 
+import com.learning.properties.RpcServiceProperties;
+import com.learning.remoting.dto.RpcRequest;
 import com.learning.serializer.kryo.KryoSerializer;
 import org.junit.Test;
 
@@ -10,12 +12,12 @@ public class KryoTest {
     @Test
     public void test() {
         KryoSerializer kryoSerializer = new KryoSerializer();
-        Hello hello = new Hello();
-        hello.setName("Chen");
-        byte[] bytes = kryoSerializer.serialize(hello);
+        RpcRequest request = new RpcRequest();
+        request.setRpcServiceProperties(new RpcServiceProperties("com.learning.a", null));
+        byte[] bytes = kryoSerializer.serialize(request);
         System.out.println(Arrays.toString(bytes));
-        Hello res = kryoSerializer.deserialize(bytes, Hello.class);
-        System.out.println(res.sayHello());
+        RpcRequest res = kryoSerializer.deserialize(bytes, RpcRequest.class);
+        System.out.println(res.getRpcServiceProperties().getRpcServiceName());
     }
 }
 
