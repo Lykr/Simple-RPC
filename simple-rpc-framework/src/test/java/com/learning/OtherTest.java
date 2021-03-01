@@ -13,7 +13,8 @@ public class OtherTest {
         try {
             System.out.println(new InetSocketAddress("127.0.0.1", 1234).getAddress());
             System.out.println(new InetSocketAddress("127.0.0.1", 1234).getHostString());
-            System.out.println(InetAddress.getLocalHost().getHostAddress());
+            System.out.println(new InetSocketAddress("127.0.0.1", 1234).toString());
+            System.out.println(InetAddress.getLocalHost().toString());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

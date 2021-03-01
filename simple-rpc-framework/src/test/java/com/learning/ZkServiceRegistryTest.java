@@ -9,7 +9,7 @@ import java.net.InetSocketAddress;
 public class ZkServiceRegistryTest {
     InetSocketAddress socketAddress = new InetSocketAddress("127.0.0.1", 1234);
     ZkServiceRegistry registry = new ZkServiceRegistry(socketAddress);
-    ServiceProperties serviceProperties = new ServiceProperties("com.learning.test", null);
+    ServiceProperties serviceProperties = new ServiceProperties("com.learning.test", "a");
 
     @Test
     public void registryTest() throws InterruptedException {
