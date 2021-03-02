@@ -1,7 +1,6 @@
 package com.learning.remoting.transport.socket;
 
 import com.learning.loadbalance.LoadBalance;
-import com.learning.properties.RpcServiceProperties;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.dto.RpcResponse;
 import com.learning.remoting.transport.AbstractClient;
@@ -23,10 +22,10 @@ public class RpcSocketClient extends AbstractClient {
     @Override
     public Object call(RpcRequest request) {
         // 1. Service discovery
-        String serviceName = request.getInterfaceName() + ":" + request.getVersion();
+        String serviceName = request.getServiceName();
         List<InetSocketAddress> serviceSocketAddresses = serviceDiscovery.lookUpService(serviceName);
         if (serviceSocketAddresses == null) {
-            log.info("Fail to call service {}.", serviceName);
+            log.info("No found server for {}.", serviceName);
             return null;
         }
 
@@ -53,6 +52,7 @@ public class RpcSocketClient extends AbstractClient {
             log.info("Get response from server {} for service {}.", serverAddress, serviceName);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            log.info("Fail to connect server {}.", serverAddress);
         }
         // 7. Return result
         return res;

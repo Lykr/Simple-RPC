@@ -1,6 +1,5 @@
 package com.learning;
 
-import com.learning.properties.RpcServiceProperties;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.serializer.kryo.KryoSerializer;
 import org.junit.Test;

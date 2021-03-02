@@ -17,6 +17,11 @@ public class RpcServiceProperties {
     private String name;
     private String version;
 
+    public RpcServiceProperties(String name) {
+        this.name = name;
+        this.version = null;
+    }
+
     public RpcServiceProperties(Class<?> clazz) {
         this.name = clazz.getName();
         this.version = null;

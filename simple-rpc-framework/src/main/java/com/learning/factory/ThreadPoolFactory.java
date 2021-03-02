@@ -29,7 +29,7 @@ public class ThreadPoolFactory {
      */
     public ExecutorService getThreadPool(String threadNamePrefix) {
         if (!THREAD_POOLS.containsKey(threadNamePrefix)) {
-            log.info("There is not {} thread pool in THREAD_POOLS, create new one.", threadNamePrefix);
+            log.info("There is no {} thread pool in THREAD_POOLS, create new one.", threadNamePrefix);
             createThreadPoolIfAbsent(threadNamePrefix);
         }
         return THREAD_POOLS.get(threadNamePrefix);

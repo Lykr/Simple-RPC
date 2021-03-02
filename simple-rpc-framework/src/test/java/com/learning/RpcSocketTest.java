@@ -27,7 +27,6 @@ public class RpcSocketTest {
                 interfaceName("com.learning.A").
                 version(null).
                 methodName("fun").
-                requestId(UUID.randomUUID().toString()).
                 parameters(null).
                 paramTypes(null).
                 build();
@@ -38,7 +37,6 @@ public class RpcSocketTest {
                 interfaceName("com.learning.Echo").
                 version(null).
                 methodName("echo").
-                requestId(UUID.randomUUID().toString()).
                 parameters(new Object[]{"Hello?"}).
                 paramTypes(new Class[]{String.class}).
                 build();

@@ -5,7 +5,7 @@ import com.learning.remoting.dto.RpcRequest;
 import com.learning.serializer.Serializer;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractClient {
+public abstract class AbstractClient implements RpcClient {
     @Autowired
     protected ServiceDiscovery serviceDiscovery;
     @Autowired
@@ -13,12 +13,4 @@ public abstract class AbstractClient {
 
     protected AbstractClient() {
     }
-
-    /**
-     * Remote procedure call
-     *
-     * @param request rpc request
-     * @return result object
-     */
-    public abstract Object call(RpcRequest request);
 }
