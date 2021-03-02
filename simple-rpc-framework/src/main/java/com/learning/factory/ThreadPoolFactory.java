@@ -13,7 +13,6 @@ import java.util.concurrent.*;
 @Component
 public class ThreadPoolFactory {
     private static final Map<String, ExecutorService> THREAD_POOLS = new ConcurrentHashMap<>();
-    ;
     private final ThreadPoolConfig threadPoolConfig;
 
     @Autowired
@@ -37,7 +36,7 @@ public class ThreadPoolFactory {
     }
 
     public void createThreadPoolIfAbsent(String threadNamePrefix) {
-        createThreadPool(threadNamePrefix, false);
+        createThreadPoolIfAbsent(threadNamePrefix, false);
     }
 
     /**

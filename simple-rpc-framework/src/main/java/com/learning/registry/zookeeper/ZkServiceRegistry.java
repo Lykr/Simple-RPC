@@ -1,5 +1,6 @@
 package com.learning.registry.zookeeper;
 
+import com.learning.config.RpcServerConfig;
 import com.learning.config.ZooKeeperConfig;
 import com.learning.registry.AbstractServiceRegistry;
 import com.learning.registry.zookeeper.helper.CuratorHelper;
@@ -18,8 +19,9 @@ public class ZkServiceRegistry extends AbstractServiceRegistry {
     @Autowired
     private CuratorHelper curatorHelper;
 
-    public ZkServiceRegistry(ZooKeeperConfig zooKeeperConfig) throws UnknownHostException {
-        super(zooKeeperConfig);
+    @Autowired
+    public ZkServiceRegistry(ZooKeeperConfig zooKeeperConfig, RpcServerConfig rpcServerConfig) throws UnknownHostException {
+        super(zooKeeperConfig, rpcServerConfig);
     }
 
     @Override
@@ -72,6 +74,10 @@ public class ZkServiceRegistry extends AbstractServiceRegistry {
             childrenNodes = servicesSocketAddressMap.get(rpcServiceName);
         } else {
             childrenNodes = curatorHelper.getChildrenNodes(rpcServiceName);
+            if (childrenNodes == null) {
+                log.info("There is not service named {} in registry center.", rpcServiceName);
+                return null;
+            }
             servicesSocketAddressMap.put(rpcServiceName, childrenNodes);
             curatorHelper.addWatcher(rpcServiceName, servicesSocketAddressMap);
         }

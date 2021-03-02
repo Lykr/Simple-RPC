@@ -12,12 +12,11 @@ public class KryoTest {
     @Test
     public void test() {
         KryoSerializer kryoSerializer = new KryoSerializer();
-        RpcRequest request = new RpcRequest();
-        request.setRpcServiceProperties(new RpcServiceProperties("com.learning.a", null));
+        RpcRequest request = RpcRequest.builder().interfaceName("com.learning.a").version(null).build();
         byte[] bytes = kryoSerializer.serialize(request);
         System.out.println(Arrays.toString(bytes));
         RpcRequest res = kryoSerializer.deserialize(bytes, RpcRequest.class);
-        System.out.println(res.getRpcServiceProperties().getRpcServiceName());
+        System.out.println(res.getInterfaceName() + ":" + res.getVersion());
     }
 }
 

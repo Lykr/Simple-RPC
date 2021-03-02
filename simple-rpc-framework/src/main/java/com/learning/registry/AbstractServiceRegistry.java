@@ -1,5 +1,6 @@
 package com.learning.registry;
 
+import com.learning.config.RpcServerConfig;
 import com.learning.config.ZooKeeperConfig;
 
 import java.net.InetAddress;
@@ -16,8 +17,8 @@ public abstract class AbstractServiceRegistry implements ServiceRegistration, Se
     protected final Map<String, List<String>> servicesSocketAddressMap;
     protected final Set<String> registeredServiceNamesSet;
 
-    public AbstractServiceRegistry(ZooKeeperConfig zooKeeperConfig) throws UnknownHostException {
-        InetSocketAddress localHostSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), zooKeeperConfig.getPort());
+    public AbstractServiceRegistry(ZooKeeperConfig zooKeeperConfig, RpcServerConfig rpcServerConfig) throws UnknownHostException {
+        InetSocketAddress localHostSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), rpcServerConfig.getPort());
         this.localHostSocketAddress = localHostSocketAddress;
         this.servicesSocketAddressMap = new ConcurrentHashMap<>();
         this.registeredServiceNamesSet = ConcurrentHashMap.newKeySet();

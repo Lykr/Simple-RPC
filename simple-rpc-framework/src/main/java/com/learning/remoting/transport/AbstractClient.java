@@ -1,6 +1,5 @@
 package com.learning.remoting.transport;
 
-import com.learning.loadbalance.LoadBalance;
 import com.learning.registry.ServiceDiscovery;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.serializer.Serializer;
@@ -21,5 +20,5 @@ public abstract class AbstractClient {
      * @param request rpc request
      * @return result object
      */
-    protected abstract Object remoteProcedureCall(RpcRequest request, LoadBalance loadBalance);
+    public abstract Object call(RpcRequest request);
 }
