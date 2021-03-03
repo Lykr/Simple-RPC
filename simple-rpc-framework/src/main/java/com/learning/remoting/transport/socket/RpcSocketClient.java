@@ -6,6 +6,7 @@ import com.learning.remoting.dto.RpcResponse;
 import com.learning.remoting.transport.AbstractClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -13,8 +14,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.List;
 
-@Component
 @Slf4j
+@Component
 public class RpcSocketClient extends AbstractClient {
     @Autowired
     LoadBalance loadBalance;
@@ -36,7 +37,7 @@ public class RpcSocketClient extends AbstractClient {
         Object res = null;
         try (Socket socket = new Socket()) {
             // 3. Connect server
-            socket.connect(socketAddress);
+            socket.connect(socketAddress, 5000);
             log.info("Connect to server {}.", serverAddress);
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);

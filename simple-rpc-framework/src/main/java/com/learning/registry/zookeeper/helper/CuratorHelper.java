@@ -75,7 +75,7 @@ public class CuratorHelper {
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(baseSleepTimeMs, maxRetries);
 
         String connectString = zooKeeperConfig.getAddress() + ":" + zooKeeperConfig.getPort();
-        int sessionTimeoutMs = zooKeeperConfig.getSessionTimeoutMS();
+        int sessionTimeoutMs = zooKeeperConfig.getSessionTimeoutMs();
         int connectionTimeoutMs = zooKeeperConfig.getConnectionTimeoutMs();
 
         return CuratorFrameworkFactory.newClient(connectString, sessionTimeoutMs, connectionTimeoutMs, retryPolicy);
