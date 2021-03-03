@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.util.UUID;
-
 public class RpcSocketTest {
     ApplicationContext context = new AnnotationConfigApplicationContext(SimpleRpcConfig.class);
 

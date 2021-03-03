@@ -3,7 +3,6 @@ package com.learning.remoting.transport;
 
 import com.learning.config.RpcServerConfig;
 import com.learning.factory.ThreadPoolFactory;
-import com.learning.properties.RpcServiceProperties;
 import com.learning.provider.ServiceProvider;
 import com.learning.registry.ServiceRegistration;
 import org.springframework.beans.factory.annotation.Autowired;

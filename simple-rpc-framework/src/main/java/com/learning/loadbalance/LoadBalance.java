@@ -11,5 +11,5 @@ public interface LoadBalance {
      * @param inetSocketAddresses socket address list
      * @return socket address
      */
-    InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses);
+    InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, String serviceName);
 }

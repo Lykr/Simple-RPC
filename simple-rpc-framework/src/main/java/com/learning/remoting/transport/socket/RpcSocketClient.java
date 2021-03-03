@@ -1,14 +1,20 @@
 package com.learning.remoting.transport.socket;
 
+import com.learning.config.RpcClientConfig;
 import com.learning.loadbalance.LoadBalance;
+import com.learning.loadbalance.RandomLoadBalance;
+import com.learning.loadbalance.RoundRobinLoadBalance;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.dto.RpcResponse;
 import com.learning.remoting.transport.AbstractClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -16,9 +22,22 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class RpcSocketClient extends AbstractClient {
+public class RpcSocketClient extends AbstractClient implements ApplicationContextAware {
     @Autowired
+    RpcClientConfig rpcClientConfig;
     LoadBalance loadBalance;
+    ApplicationContext context;
+
+    @PostConstruct
+    public void setLoadBalance() {
+        String loadBalance = rpcClientConfig.getLoadBalance();
+        if ("robin".equals(loadBalance)) {
+            this.loadBalance = context.getBean(RoundRobinLoadBalance.class);
+        } else {
+            this.loadBalance = context.getBean(RandomLoadBalance.class);
+        }
+        log.info("Use {} load balance.", loadBalance);
+    }
 
     @Override
     public Object call(RpcRequest request) {
@@ -31,7 +50,7 @@ public class RpcSocketClient extends AbstractClient {
         }
 
         // 2. Load balance
-        InetSocketAddress socketAddress = loadBalance.getSocketAddress(serviceSocketAddresses);
+        InetSocketAddress socketAddress = loadBalance.getSocketAddress(serviceSocketAddresses, serviceName);
 
         String serverAddress = socketAddress.getHostString() + ":" + socketAddress.getPort();
         Object res = null;
@@ -57,5 +76,10 @@ public class RpcSocketClient extends AbstractClient {
         }
         // 7. Return result
         return res;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
     }
 }
