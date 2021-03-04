@@ -65,7 +65,7 @@ public class ThreadPoolFactory {
      * @param daemon
      * @return Thread pool
      */
-    private ExecutorService createThreadPool(String threadNamePrefix, Boolean daemon) {
+    public ExecutorService createThreadPool(String threadNamePrefix, Boolean daemon) {
         ThreadFactory threadFactory = createThreadFactory(threadNamePrefix, daemon);
         log.info("Create {} thread pool.", threadNamePrefix);
         return new ThreadPoolExecutor(threadPoolConfig.getCorePoolSize(), threadPoolConfig.getMaximumPoolSize(),
@@ -82,7 +82,7 @@ public class ThreadPoolFactory {
      * @param daemon
      * @return Thread factory
      */
-    private ThreadFactory createThreadFactory(String threadNamePrefix, Boolean daemon) {
+    public ThreadFactory createThreadFactory(String threadNamePrefix, Boolean daemon) {
         if (threadNamePrefix != null) {
             if (daemon != null) {
                 log.info("Create thread factory for {} thread pool.", threadNamePrefix);

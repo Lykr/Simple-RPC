@@ -2,7 +2,6 @@ package com.learning.remoting.transport.socket;
 
 import com.learning.config.RpcServerConfig;
 import com.learning.factory.ThreadPoolFactory;
-import com.learning.properties.RpcServiceProperties;
 import com.learning.remoting.transport.AbstractServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -25,35 +24,6 @@ public class RpcSocketServer extends AbstractServer implements ApplicationContex
     @Autowired
     protected RpcSocketServer(RpcServerConfig rpcServerConfig, ThreadPoolFactory threadPoolFactory) throws UnknownHostException {
         super(rpcServerConfig, threadPoolFactory);
-    }
-
-    @Override
-    public boolean addService(RpcServiceProperties properties, Object obj) {
-        // 1. Get service name
-        String serviceName = properties.getRpcServiceName();
-        // 2. Add service to service provider
-        serviceProvider.addService(serviceName, obj);
-        // 3. Registry service
-        boolean success = serviceRegistration.registerService(serviceName);
-        // If registry service fail, rollback serviceProvider
-        if (!success) {
-            serviceProvider.removeService(serviceName);
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean removeService(RpcServiceProperties properties) {
-        // 1. Get service name
-        String serviceName = properties.getRpcServiceName();
-        // 2. Deregister service
-        boolean success = serviceRegistration.deregisterService(serviceName);
-        if (!success) return false;
-        // 3. Remove service from service provider
-        serviceProvider.removeService(serviceName);
-        return true;
     }
 
     @Override

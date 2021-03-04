@@ -11,10 +11,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class RpcResponse implements Serializable {
     private static final long serialVersionUID = 4511475127055221824L;
-    /**
-     * 200 - success
-     * 400 - failure
-     */
-    private Integer code;
     private Object data;
 }
