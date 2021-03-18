@@ -43,10 +43,15 @@ public class RpcNettyServer extends AbstractServer {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
+                    // Set TCP_NODELAY to true to close Nagle algorithm (Wait to send a bigger packet)
                     .childOption(ChannelOption.TCP_NODELAY, true)
+                    // HeartBeat
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    // Store the tcp connection which completed shake hand
                     .option(ChannelOption.SO_BACKLOG, 256)
+                    // Log handler, running after bootstrap init
                     .handler(new LoggingHandler(LogLevel.INFO))
+                    // Channel handler, running after channel set up (client connect)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
