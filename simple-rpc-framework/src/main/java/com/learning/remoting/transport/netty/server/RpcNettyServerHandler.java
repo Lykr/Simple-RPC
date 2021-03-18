@@ -1,6 +1,6 @@
-package com.learning.remoting.transport.netty.handler;
+package com.learning.remoting.transport.netty.server;
 
-import com.learning.handler.RpcRequestHandler;
+import com.learning.remoting.handler.RpcRequestHandler;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.dto.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
@@ -28,8 +28,10 @@ public class RpcNettyServerHandler extends ChannelInboundHandlerAdapter {
             Object result = rpcRequestHandler.handle(request);
             // 3. Make response
             RpcResponse rpcResponse = RpcResponse.builder().data(result).build();
+            // Add async listener
             ctx.writeAndFlush(rpcResponse).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
         } finally {
+            // Release ByteBuf
             ReferenceCountUtil.release(msg);
         }
     }

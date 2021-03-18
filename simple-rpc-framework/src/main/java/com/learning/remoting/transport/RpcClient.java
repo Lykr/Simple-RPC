@@ -2,6 +2,9 @@ package com.learning.remoting.transport;
 
 import com.learning.remoting.dto.RpcRequest;
 
+import java.net.InetSocketAddress;
+import java.util.List;
+
 public interface RpcClient {
     /**
      * Remote procedure call
@@ -9,5 +12,12 @@ public interface RpcClient {
      * @param request rpc request
      * @return result object
      */
-    public abstract Object call(RpcRequest request);
+    Object call(RpcRequest request);
+
+    /**
+     * Discover service
+     * @param serviceName
+     * @return InetSocketAddresses of the service
+     */
+    List<InetSocketAddress> serviceDiscovery(String serviceName);
 }
