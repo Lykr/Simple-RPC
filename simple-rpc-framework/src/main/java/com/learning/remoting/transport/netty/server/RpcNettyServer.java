@@ -18,10 +18,12 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class RpcNettyServer extends AbstractServer {
     @Autowired
     KryoSerializer kryoSerializer;

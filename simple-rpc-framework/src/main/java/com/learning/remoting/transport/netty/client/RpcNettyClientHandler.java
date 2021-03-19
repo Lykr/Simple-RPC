@@ -40,6 +40,9 @@ public class RpcNettyClientHandler extends ChannelInboundHandlerAdapter {
                 log.info("write idle happen {}", ctx.channel().remoteAddress());
                 // Send heart beat packet
                 // WAIT TO BE DONE
+
+                // Now just close it
+                ctx.close();
             }
         } else {
             super.userEventTriggered(ctx, evt);

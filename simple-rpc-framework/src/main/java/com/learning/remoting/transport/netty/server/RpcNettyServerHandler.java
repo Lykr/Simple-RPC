@@ -4,6 +4,7 @@ import com.learning.remoting.handler.RpcRequestHandler;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.dto.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@ChannelHandler.Sharable
 public class RpcNettyServerHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private RpcRequestHandler rpcRequestHandler;
@@ -27,7 +29,7 @@ public class RpcNettyServerHandler extends ChannelInboundHandlerAdapter {
             // 2. Call method and get result
             Object result = rpcRequestHandler.handle(request);
             // 3. Make response
-            RpcResponse rpcResponse = RpcResponse.builder().data(result).build();
+            RpcResponse rpcResponse = RpcResponse.builder().data(result).requestId(request.getRequestId()).build();
             // Add async listener
             ctx.writeAndFlush(rpcResponse).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
         } finally {

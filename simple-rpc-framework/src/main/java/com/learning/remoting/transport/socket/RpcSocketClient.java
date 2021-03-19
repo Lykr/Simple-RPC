@@ -3,7 +3,9 @@ package com.learning.remoting.transport.socket;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.dto.RpcResponse;
 import com.learning.remoting.transport.AbstractClient;
+import com.learning.spring.condition.SocketClientCondition;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -12,7 +14,8 @@ import java.net.Socket;
 import java.util.List;
 
 @Slf4j
-@Component
+//@Conditional({SocketClientCondition.class})
+//@Component
 public class RpcSocketClient extends AbstractClient {
 
     @Override

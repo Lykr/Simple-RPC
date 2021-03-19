@@ -21,14 +21,12 @@ public abstract class AbstractServer implements RpcServer {
     protected ServiceRegistration serviceRegistration; // Service registry for registering service
     protected RpcServerConfig rpcServerConfig; // Service registry for registering service
     protected ThreadPoolFactory threadPoolFactory;
-    protected ExecutorService threadPool; // Thread pool for running service
 
     protected AbstractServer(RpcServerConfig rpcServerConfig, ThreadPoolFactory threadPoolFactory) throws UnknownHostException {
         this.rpcServerConfig = rpcServerConfig;
         this.LOCAL_HOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
         this.PORT = rpcServerConfig.getPort();
         this.threadPoolFactory = threadPoolFactory;
-        this.threadPool = threadPoolFactory.getThreadPool(rpcServerConfig.getThreadNamePrefix());
     }
 
     @Override

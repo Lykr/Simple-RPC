@@ -7,9 +7,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class RpcClientApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ApplicationContext context = new AnnotationConfigApplicationContext(SimpleRpcConfig.class);
         EchoService echo = context.getBean(ServiceProxyFactory.class).getProxy(EchoService.class);
+        System.out.println(echo.echo("Hello~"));
+        System.out.println(echo.echo("Hello~"));
         System.out.println(echo.echo("Hello~"));
     }
 }

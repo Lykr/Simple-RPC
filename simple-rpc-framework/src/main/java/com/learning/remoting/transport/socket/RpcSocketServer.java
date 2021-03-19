@@ -15,15 +15,18 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
 
 @Slf4j
-@Component
+//@Component
 public class RpcSocketServer extends AbstractServer implements ApplicationContextAware {
     private ApplicationContext context;
+    private final ExecutorService threadPool; // Thread pool for running service
 
     @Autowired
     protected RpcSocketServer(RpcServerConfig rpcServerConfig, ThreadPoolFactory threadPoolFactory) throws UnknownHostException {
         super(rpcServerConfig, threadPoolFactory);
+        this.threadPool = threadPoolFactory.getThreadPool(rpcServerConfig.getThreadNamePrefix());
     }
 
     @Override

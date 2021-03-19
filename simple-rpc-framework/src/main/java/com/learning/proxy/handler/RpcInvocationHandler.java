@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -24,6 +26,7 @@ public class RpcInvocationHandler implements InvocationHandler {
                 methodName(method.getName()).
                 paramTypes(method.getParameterTypes()).
                 parameters(args).
+                requestId(UUID.randomUUID().toString()).
                 build();
         // 2. RPC
         Object obj = rpcClient.call(request);
