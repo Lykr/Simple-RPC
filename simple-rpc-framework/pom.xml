@@ -66,6 +66,12 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.59.Final</version>
         </dependency>
+        <!--RabbitMQ-->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.11.0</version>
+        </dependency>
     </dependencies>
 
 </project>
