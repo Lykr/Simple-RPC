@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -21,11 +22,10 @@ import java.util.concurrent.ExecutorService;
 //@Component
 public class RpcSocketServer extends AbstractServer implements ApplicationContextAware {
     private ApplicationContext context;
-    private final ExecutorService threadPool; // Thread pool for running service
+    private ExecutorService threadPool; // Thread pool for running service
 
-    @Autowired
-    protected RpcSocketServer(RpcServerConfig rpcServerConfig, ThreadPoolFactory threadPoolFactory) throws UnknownHostException {
-        super(rpcServerConfig, threadPoolFactory);
+    @PostConstruct
+    public void setThreadPool() {
         this.threadPool = threadPoolFactory.getThreadPool(rpcServerConfig.getThreadNamePrefix());
     }
 

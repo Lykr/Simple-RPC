@@ -23,23 +23,19 @@ import org.springframework.stereotype.Component;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
-@Component
 public class RpcNettyServer extends AbstractServer {
     @Autowired
     KryoSerializer kryoSerializer;
     @Autowired
     RpcNettyServerHandler rpcNettyServerHandler;
 
-    protected RpcNettyServer(RpcServerConfig rpcServerConfig, ThreadPoolFactory threadPoolFactory) throws UnknownHostException {
-        super(rpcServerConfig, threadPoolFactory);
-    }
-
     @Override
     public void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        DefaultEventExecutorGroup serviceHandlerGroup = new DefaultEventExecutorGroup(Runtime.getRuntime().availableProcessors() * 2,
-                threadPoolFactory.createThreadFactory("server-handler-group", false));
+        // No need below code, workerGroup includes a default event executor group for running channel handler in pipeline
+        // DefaultEventExecutorGroup serviceHandlerGroup = new DefaultEventExecutorGroup(Runtime.getRuntime().availableProcessors() * 2,
+        //         threadPoolFactory.createThreadFactory("server-handler-group", false));
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
@@ -60,7 +56,7 @@ public class RpcNettyServer extends AbstractServer {
                             p.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS))
                                     .addLast(new RpcNettyEncoder(kryoSerializer, RpcResponse.class))
                                     .addLast(new RpcNettyDecoder(kryoSerializer, RpcRequest.class))
-                                    .addLast(serviceHandlerGroup, rpcNettyServerHandler);
+                                    .addLast(rpcNettyServerHandler);
                         }
                     });
             ChannelFuture f = b.bind(LOCAL_HOST_ADDRESS, PORT).sync();
@@ -70,7 +66,7 @@ public class RpcNettyServer extends AbstractServer {
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
-            serviceHandlerGroup.shutdownGracefully();
+            // serviceHandlerGroup.shutdownGracefully();
         }
 
     }

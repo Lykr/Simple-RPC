@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-@Component
-public class RoundRobinLoadBalance implements LoadBalance {
+public class RoundRobinLoadBalancer implements LoadBalancer {
     ConcurrentHashMap<String, Integer> serviceName2lastServerIdx = new ConcurrentHashMap<>();
 
     @Override

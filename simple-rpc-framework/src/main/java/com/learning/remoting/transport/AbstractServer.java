@@ -8,25 +8,31 @@ import com.learning.provider.ServiceProvider;
 import com.learning.registry.ServiceRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 
 public abstract class AbstractServer implements RpcServer {
-    protected final String LOCAL_HOST_ADDRESS; // Local host address
-    protected final int PORT; // Server port
+    protected String LOCAL_HOST_ADDRESS; // Local host address
+    protected int PORT; // Server port
     @Autowired
     protected ServiceProvider serviceProvider; // Service provider for adding and getting service
     @Autowired
     protected ServiceRegistration serviceRegistration; // Service registry for registering service
+    @Autowired
     protected RpcServerConfig rpcServerConfig; // Service registry for registering service
+    @Autowired
     protected ThreadPoolFactory threadPoolFactory;
 
-    protected AbstractServer(RpcServerConfig rpcServerConfig, ThreadPoolFactory threadPoolFactory) throws UnknownHostException {
-        this.rpcServerConfig = rpcServerConfig;
-        this.LOCAL_HOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
+    @PostConstruct
+    public void setProperties() {
+        try {
+            this.LOCAL_HOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         this.PORT = rpcServerConfig.getPort();
-        this.threadPoolFactory = threadPoolFactory;
     }
 
     @Override

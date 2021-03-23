@@ -1,16 +1,12 @@
 package com.learning.remoting.transport.netty.client;
 
 import com.learning.remoting.dto.RpcResponse;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import java.net.InetSocketAddress;
 
 @Slf4j
 public class RpcNettyClientHandler extends ChannelInboundHandlerAdapter {

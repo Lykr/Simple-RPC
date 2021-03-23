@@ -10,7 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class RpcServerApplication {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(SimpleRpcConfig.class);
-        RpcServer server = context.getBean(RpcNettyServer.class);
+        RpcServer server = context.getBean(RpcServer.class);
 
         server.addService(new RpcServiceProperties("com.learning.service.EchoService"), new EchoServiceImpl());
 

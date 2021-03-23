@@ -16,7 +16,7 @@ public class RandomLoadBalanceCondition implements Condition {
         } catch (Exception e) {
             return false;
         }
-        PropertyValue propertyValue = rpcClientConfig.getPropertyValues().getPropertyValue("loadBalance");
+        PropertyValue propertyValue = rpcClientConfig.getPropertyValues().getPropertyValue("loadBalancer");
         if (propertyValue == null) return true;
         if (propertyValue.toString().equals("random")) return true;
         return false;

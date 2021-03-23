@@ -1,15 +1,13 @@
 package com.learning.loadbalance;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Random;
 
 @Slf4j
-@Component
-public class RandomLoadBalance implements LoadBalance {
+public class RandomLoadBalancer implements LoadBalancer {
     @Override
     public InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, String serviceName) {
         if (inetSocketAddresses == null || inetSocketAddresses.size() == 0) {

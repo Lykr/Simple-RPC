@@ -3,7 +3,7 @@ package com.learning.loadbalance;
 import java.net.InetSocketAddress;
 import java.util.List;
 
-public interface LoadBalance {
+public interface LoadBalancer {
 
     /**
      * Load balance (Choose one socket address from list)

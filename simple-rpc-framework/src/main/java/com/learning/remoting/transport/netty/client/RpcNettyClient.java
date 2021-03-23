@@ -1,11 +1,14 @@
 package com.learning.remoting.transport.netty.client;
 
+import com.learning.config.RpcClientConfig;
+import com.learning.loadbalance.LoadBalancer;
+import com.learning.registry.ServiceDiscovery;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.dto.RpcResponse;
 import com.learning.remoting.transport.AbstractClient;
 import com.learning.remoting.transport.netty.coder.RpcNettyDecoder;
 import com.learning.remoting.transport.netty.coder.RpcNettyEncoder;
-import com.learning.spring.condition.NettyClientCondition;
+import com.learning.serializer.Serializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -15,8 +18,6 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -25,8 +26,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Component
-//@Conditional({NettyClientCondition.class})
 public class RpcNettyClient extends AbstractClient {
     private final ChannelProvider channelProvider;
     private final RequestChecker requestChecker;
@@ -61,7 +60,7 @@ public class RpcNettyClient extends AbstractClient {
         String serviceName = request.getServiceName();
         List<InetSocketAddress> addresses = serviceDiscovery(serviceName);
         // Load Balance
-        InetSocketAddress address = loadBalance.getSocketAddress(addresses, serviceName);
+        InetSocketAddress address = loadBalancer.getSocketAddress(addresses, serviceName);
         // Get channel of address
         Channel channel = channelProvider.getChannel(address);
         if (channel.isActive()) {

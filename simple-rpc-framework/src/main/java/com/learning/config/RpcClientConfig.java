@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource(value = {"classpath:rpc.properties"}, encoding = "UTF-8")
 public class RpcClientConfig {
-    private static final String DEFAULT_LOADBALANCE = "random";
+    private static final String DEFAULT_LOADBALANCER = "random";
     private static final String DEFAULT_TYPE = "socket";
 
-    @Value("${client.loadBalance}")
-    private String loadBalance = DEFAULT_LOADBALANCE;
+    @Value("${client.loadBalancer}")
+    private String loadbalancer = DEFAULT_LOADBALANCER;
 
     @Value("${client.type}")
     private String type = DEFAULT_TYPE;

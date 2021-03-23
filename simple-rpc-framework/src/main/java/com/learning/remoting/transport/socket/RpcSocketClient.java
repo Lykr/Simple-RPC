@@ -1,12 +1,13 @@
 package com.learning.remoting.transport.socket;
 
+import com.learning.config.RpcClientConfig;
+import com.learning.loadbalance.LoadBalancer;
+import com.learning.registry.ServiceDiscovery;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.dto.RpcResponse;
 import com.learning.remoting.transport.AbstractClient;
-import com.learning.spring.condition.SocketClientCondition;
+import com.learning.serializer.Serializer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -25,7 +26,7 @@ public class RpcSocketClient extends AbstractClient {
         List<InetSocketAddress> serviceSocketAddresses = serviceDiscovery(serviceName);
 
         // 2. Load balance
-        InetSocketAddress socketAddress = loadBalance.getSocketAddress(serviceSocketAddresses, serviceName);
+        InetSocketAddress socketAddress = loadBalancer.getSocketAddress(serviceSocketAddresses, serviceName);
 
         String serverAddress = socketAddress.getHostString() + ":" + socketAddress.getPort();
         Object res = null;
