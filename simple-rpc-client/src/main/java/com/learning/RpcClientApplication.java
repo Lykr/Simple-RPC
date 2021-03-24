@@ -13,5 +13,7 @@ public class RpcClientApplication {
         System.out.println(echo.echo("Hello~"));
         System.out.println(echo.echo("Hello~"));
         System.out.println(echo.echo("Hello~"));
+        Thread.sleep(20000);
+        System.out.println(echo.echo("Hello~"));
     }
 }

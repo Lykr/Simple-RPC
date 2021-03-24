@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 /**
  * RPC reference annotation, marked on the rpc interface for autowiring
  */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface RpcReference {

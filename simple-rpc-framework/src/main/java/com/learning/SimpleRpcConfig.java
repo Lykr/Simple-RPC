@@ -6,7 +6,6 @@ import com.learning.loadbalance.LoadBalancer;
 import com.learning.loadbalance.RandomLoadBalancer;
 import com.learning.loadbalance.RoundRobinLoadBalancer;
 import com.learning.registry.ServiceDiscovery;
-import com.learning.registry.zookeeper.ZkServiceRegistry;
 import com.learning.remoting.transport.RpcClient;
 import com.learning.remoting.transport.RpcServer;
 import com.learning.remoting.transport.netty.client.RpcNettyClient;
@@ -36,35 +35,53 @@ public class SimpleRpcConfig {
     @Bean
     public LoadBalancer loadBalancer() {
         String type = rpcClientConfig.getLoadbalancer();
-        if (type.equals("random")) {
-            return new RandomLoadBalancer();
-        } else if (type.equals("robin")) {
-            return new RoundRobinLoadBalancer();
+        LoadBalancer loadBalancer;
+        switch (type) {
+            case "random":
+                loadBalancer = new RandomLoadBalancer();
+                break;
+            case "robin":
+                loadBalancer = new RoundRobinLoadBalancer();
+                break;
+            default:
+                loadBalancer = new RandomLoadBalancer();
         }
-        return null;
+        return loadBalancer;
     }
 
     @Lazy
     @Bean
     public RpcClient rpcClient() {
         String type = rpcClientConfig.getType();
-        if (type.equals("netty")) {
-            return new RpcNettyClient();
-        } else if (type.equals("socket")) {
-            return new RpcSocketClient();
+        RpcClient rpcClient;
+        switch (type) {
+            case "netty":
+                rpcClient = new RpcNettyClient();
+                break;
+            case "socket":
+                rpcClient = new RpcSocketClient();
+                break;
+            default:
+                rpcClient = new RpcSocketClient();
         }
-        return null;
+        return rpcClient;
     }
 
     @Lazy
     @Bean
     public RpcServer rpcServer() {
         String type = rpcServerConfig.getType();
-        if (type.equals("netty")) {
-            return new RpcNettyServer();
-        } else if (type.equals("socket")) {
-            return new RpcSocketServer();
+        RpcServer rpcServer;
+        switch (type) {
+            case "netty":
+                rpcServer = new RpcNettyServer();
+                break;
+            case "socket":
+                rpcServer = new RpcSocketServer();
+                break;
+            default:
+                rpcServer = new RpcSocketServer();
         }
-        return null;
+        return rpcServer;
     }
 }

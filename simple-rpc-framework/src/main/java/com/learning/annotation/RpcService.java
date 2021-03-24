@@ -1,19 +1,14 @@
 package com.learning.annotation;
 
-import org.springframework.stereotype.Component;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * RPC service annotation, marked on the service implementation
  */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Component
+@Inherited
 public @interface RpcService {
-    // the interface which be implemented by annotated class
-    Class<?> value();
+
 }
