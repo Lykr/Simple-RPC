@@ -10,6 +10,8 @@ import com.learning.remoting.transport.RpcClient;
 import com.learning.remoting.transport.RpcServer;
 import com.learning.remoting.transport.netty.client.RpcNettyClient;
 import com.learning.remoting.transport.netty.server.RpcNettyServer;
+import com.learning.remoting.transport.rabbitmq.RpcRabbitMQClient;
+import com.learning.remoting.transport.rabbitmq.RpcRabbitMQServer;
 import com.learning.remoting.transport.socket.RpcSocketClient;
 import com.learning.remoting.transport.socket.RpcSocketServer;
 import com.learning.serializer.Serializer;
@@ -37,9 +39,6 @@ public class SimpleRpcConfig {
         String type = rpcClientConfig.getLoadbalancer();
         LoadBalancer loadBalancer;
         switch (type) {
-            case "random":
-                loadBalancer = new RandomLoadBalancer();
-                break;
             case "robin":
                 loadBalancer = new RoundRobinLoadBalancer();
                 break;
@@ -58,8 +57,8 @@ public class SimpleRpcConfig {
             case "netty":
                 rpcClient = new RpcNettyClient();
                 break;
-            case "socket":
-                rpcClient = new RpcSocketClient();
+            case "rabbitmq":
+                rpcClient = new RpcRabbitMQClient();
                 break;
             default:
                 rpcClient = new RpcSocketClient();
@@ -76,8 +75,8 @@ public class SimpleRpcConfig {
             case "netty":
                 rpcServer = new RpcNettyServer();
                 break;
-            case "socket":
-                rpcServer = new RpcSocketServer();
+            case "rabbitmq":
+                rpcServer = new RpcRabbitMQServer();
                 break;
             default:
                 rpcServer = new RpcSocketServer();

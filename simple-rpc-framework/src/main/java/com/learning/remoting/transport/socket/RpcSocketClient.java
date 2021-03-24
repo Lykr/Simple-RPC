@@ -21,12 +21,8 @@ public class RpcSocketClient extends AbstractClient {
 
     @Override
     public Object call(RpcRequest request) {
-        // 1. Service discovery
-        String serviceName = request.getServiceName();
-        List<InetSocketAddress> serviceSocketAddresses = serviceDiscovery(serviceName);
 
-        // 2. Load balance
-        InetSocketAddress socketAddress = loadBalancer.getSocketAddress(serviceSocketAddresses, serviceName);
+        InetSocketAddress socketAddress = getServiceAddress(request);
 
         String serverAddress = socketAddress.getHostString() + ":" + socketAddress.getPort();
         Object res = null;
@@ -45,7 +41,7 @@ public class RpcSocketClient extends AbstractClient {
             RpcResponse response = (RpcResponse) objectInputStream.readObject();
             // 6. Parse response
             res = response.getData();
-            log.info("Get response from server {} for service {}.", serverAddress, serviceName);
+            log.info("Get response from server {} for service {}.", serverAddress, request.getServiceName());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             log.info("Fail to connect server {}.", serverAddress);

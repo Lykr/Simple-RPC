@@ -4,7 +4,6 @@ import com.learning.properties.RpcServiceProperties;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.remoting.transport.socket.RpcSocketClient;
 import com.learning.remoting.transport.socket.RpcSocketServer;
-import com.learning.test.Echo;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -17,7 +16,7 @@ public class RpcSocketTest {
         RpcSocketServer server = context.getBean(RpcSocketServer.class);
         RpcSocketClient client = context.getBean(RpcSocketClient.class);
 
-        server.addService(new RpcServiceProperties("com.learning.Echo", null), new Echo());
+        server.addService(new RpcServiceProperties("com.learning.Hello", null), new Hello());
         Thread thread = new Thread(server::start);
         thread.start();
 

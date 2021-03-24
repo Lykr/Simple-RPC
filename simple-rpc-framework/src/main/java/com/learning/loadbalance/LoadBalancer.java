@@ -1,5 +1,7 @@
 package com.learning.loadbalance;
 
+import com.learning.exception.NoServerException;
+
 import java.net.InetSocketAddress;
 import java.util.List;
 
@@ -11,5 +13,5 @@ public interface LoadBalancer {
      * @param inetSocketAddresses socket address list
      * @return socket address
      */
-    InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, String serviceName);
+    InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, String serviceName) throws NoServerException;
 }

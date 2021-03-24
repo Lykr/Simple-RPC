@@ -1,8 +1,10 @@
 package com.learning.remoting.transport;
 
 import com.learning.config.RpcClientConfig;
+import com.learning.exception.NoServerException;
 import com.learning.loadbalance.LoadBalancer;
 import com.learning.registry.ServiceDiscovery;
+import com.learning.remoting.dto.RpcRequest;
 import com.learning.serializer.Serializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -36,6 +38,19 @@ public abstract class AbstractClient implements RpcClient, ApplicationContextAwa
     //     }
     //     log.info("Use {} load balance.", loadBalancer);
     // }
+
+    public InetSocketAddress getServiceAddress(RpcRequest request) {
+        String serviceName = request.getServiceName();
+        List<InetSocketAddress> serviceSocketAddresses = serviceDiscovery(serviceName);
+
+        InetSocketAddress socketAddress = null;
+        try {
+            socketAddress = loadBalancer.getSocketAddress(serviceSocketAddresses, serviceName);
+        } catch (NoServerException e) {
+            e.printStackTrace();
+        }
+        return socketAddress;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

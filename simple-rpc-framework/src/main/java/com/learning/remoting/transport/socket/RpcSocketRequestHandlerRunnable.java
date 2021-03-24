@@ -14,8 +14,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 @Slf4j
-@Component
 @Scope("prototype")
+@Component
 public class RpcSocketRequestHandlerRunnable implements Runnable {
     private final Socket socket;
     @Autowired

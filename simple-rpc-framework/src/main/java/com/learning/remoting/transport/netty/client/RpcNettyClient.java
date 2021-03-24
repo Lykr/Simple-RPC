@@ -56,11 +56,7 @@ public class RpcNettyClient extends AbstractClient {
     public Object call(RpcRequest request) {
         // Async return result
         CompletableFuture<RpcResponse> resultFuture = new CompletableFuture<>();
-        // Service discovery
-        String serviceName = request.getServiceName();
-        List<InetSocketAddress> addresses = serviceDiscovery(serviceName);
-        // Load Balance
-        InetSocketAddress address = loadBalancer.getSocketAddress(addresses, serviceName);
+        InetSocketAddress address = getServiceAddress(request);
         // Get channel of address
         Channel channel = channelProvider.getChannel(address);
         if (channel.isActive()) {
