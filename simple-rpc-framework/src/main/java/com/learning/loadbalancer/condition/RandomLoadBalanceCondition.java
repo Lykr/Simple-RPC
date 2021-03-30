@@ -1,4 +1,4 @@
-package com.learning.loadbalance.condition;
+package com.learning.loadbalancer.condition;
 
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;

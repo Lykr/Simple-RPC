@@ -2,9 +2,10 @@ package com.learning;
 
 import com.learning.config.RpcClientConfig;
 import com.learning.config.RpcServerConfig;
-import com.learning.loadbalance.LoadBalancer;
-import com.learning.loadbalance.RandomLoadBalancer;
-import com.learning.loadbalance.RoundRobinLoadBalancer;
+import com.learning.loadbalancer.ConsistentHashLoadBalancer;
+import com.learning.loadbalancer.LoadBalancer;
+import com.learning.loadbalancer.RandomLoadBalancer;
+import com.learning.loadbalancer.RoundRobinLoadBalancer;
 import com.learning.registry.ServiceDiscovery;
 import com.learning.remoting.transport.RpcClient;
 import com.learning.remoting.transport.RpcServer;
@@ -41,6 +42,9 @@ public class SimpleRpcConfig {
         switch (type) {
             case "robin":
                 loadBalancer = new RoundRobinLoadBalancer();
+                break;
+            case "consistentHash":
+                loadBalancer = new ConsistentHashLoadBalancer();
                 break;
             default:
                 loadBalancer = new RandomLoadBalancer();

@@ -1,6 +1,7 @@
-package com.learning.loadbalance;
+package com.learning.loadbalancer;
 
 import com.learning.exception.NoServerException;
+import com.learning.remoting.dto.RpcRequest;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -13,5 +14,5 @@ public interface LoadBalancer {
      * @param inetSocketAddresses socket address list
      * @return socket address
      */
-    InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, String serviceName) throws NoServerException;
+    InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, RpcRequest request) throws NoServerException;
 }

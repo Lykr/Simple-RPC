@@ -1,6 +1,7 @@
-package com.learning.loadbalance;
+package com.learning.loadbalancer;
 
 import com.learning.exception.NoServerException;
+import com.learning.remoting.dto.RpcRequest;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
@@ -10,7 +11,7 @@ import java.util.Random;
 @Slf4j
 public class RandomLoadBalancer implements LoadBalancer {
     @Override
-    public InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, String serviceName) throws NoServerException {
+    public InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, RpcRequest request) throws NoServerException {
         if (inetSocketAddresses == null || inetSocketAddresses.size() == 0) {
             log.info("There is no server fr this service.");
             throw new NoServerException();

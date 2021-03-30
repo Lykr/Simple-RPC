@@ -2,7 +2,7 @@ package com.learning.remoting.transport;
 
 import com.learning.config.RpcClientConfig;
 import com.learning.exception.NoServerException;
-import com.learning.loadbalance.LoadBalancer;
+import com.learning.loadbalancer.LoadBalancer;
 import com.learning.registry.ServiceDiscovery;
 import com.learning.remoting.dto.RpcRequest;
 import com.learning.serializer.Serializer;
@@ -45,7 +45,7 @@ public abstract class AbstractClient implements RpcClient, ApplicationContextAwa
 
         InetSocketAddress socketAddress = null;
         try {
-            socketAddress = loadBalancer.getSocketAddress(serviceSocketAddresses, serviceName);
+            socketAddress = loadBalancer.getSocketAddress(serviceSocketAddresses, request);
         } catch (NoServerException e) {
             e.printStackTrace();
         }

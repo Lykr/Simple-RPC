@@ -1,8 +1,8 @@
-package com.learning.loadbalance;
+package com.learning.loadbalancer;
 
 import com.learning.exception.NoServerException;
+import com.learning.remoting.dto.RpcRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -13,11 +13,13 @@ public class RoundRobinLoadBalancer implements LoadBalancer {
     ConcurrentHashMap<String, Integer> serviceName2lastServerIdx = new ConcurrentHashMap<>();
 
     @Override
-    public InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, String serviceName) throws NoServerException {
+    public InetSocketAddress getSocketAddress(List<InetSocketAddress> inetSocketAddresses, RpcRequest request) throws NoServerException {
         if (inetSocketAddresses == null || inetSocketAddresses.size() == 0) {
             log.info("There is no server for this service.");
             throw new NoServerException();
         }
+
+        String serviceName = request.getServiceName();
 
         int lastServerIdx = serviceName2lastServerIdx.computeIfAbsent(serviceName, k -> -1);
 
